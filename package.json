@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js", 
+    "start": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
@@ -16,7 +16,8 @@
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.2.2"
+    "mongoose": "^7.2.2",
+    "puppeteer": "^20.5.0"
   },
   "devDependencies": {
     "eslint": "^8.42.0",
