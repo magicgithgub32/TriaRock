@@ -3,21 +3,20 @@ const {
   getAllProducts,
   getProductById,
   createProduct,
-  updateProductById,
-  deleteProduct,
-//   deleteProductFieldById,
-//   uploadProductImg
+  updateProduct,
+  deleteProduct
+  //   uploadProductImg
 } = require('../controllers/product-controllers');
 const router = express.Router();
-const { isAuth } = require('../../middlewares/isAuth');
+// const { isAuth } = require('../../middlewares/isAuth-middleware');
 // const { uploadImgCloudinary } = require('../../middlewares/uploadImg');
 
 router.get('/', getAllProducts);
 router.get('/:id', getProductById);
-router.post('/', [isAuth], createProduct);
-router.put('/:id', [isAuth], updateProductById);
+
+// router.post('/', [isAuth], createProduct);
+// router.put('/:id', [isAuth], updateProduct);
 // router.patch('/:id', [isAuth], uploadImgCloudinary.single('image'), uploadProductImg);
-router.delete('/:id', [isAuth], deleteProduct);
-// router.delete('/:id/author', [isAuth], deleteProductFieldById);
+// router.delete('/:id', [isAuth], deleteProduct);
 
 module.exports = router;
