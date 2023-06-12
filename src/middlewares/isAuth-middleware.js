@@ -9,8 +9,8 @@ const isAuth = async (req, res, next) => {
       return next(new Error('Unauthorized ⛔️'));
     }
 
-    const parsedToken = token.replace('Bearer ', '');
-    const validToken = verifyToken(parsedToken, process.env.JWT_SECRET);
+    const parsedToken = token?.replace('Bearer ', '');
+    const validToken = verifyToken(parsedToken);
 
     const userLogued = await User.findById(validToken.id);
 

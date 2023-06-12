@@ -14,7 +14,9 @@ const createProduct = async (req, res, next) => {
     const newProduct = new Product(req.body);
 
     const createdProduct = await newProduct.save();
+ 
     return res.status(201).json(createdProduct);
+   
   } catch (error) {
     return next('Error while creating Product 👺', error);
   }

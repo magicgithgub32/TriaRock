@@ -34,14 +34,8 @@ const register = async (req, res, next) => {
 
     createdUser.password = null;
 
-    const token = generateToken(createdUser._id, createdUser.email);
-
     return res.status(201).json({
-      user: {
-        email: createdUser.email,
-        _id: createdUser._id
-      },
-      token: token
+      createdUser
     });
   } catch (error) {
     console.error('Error registering user:', error);
