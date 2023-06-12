@@ -1,10 +1,10 @@
 const express = require('express');
 const {
   getAllCategories,
-  getCategoryById
-  // createCategory,
-  // updateCategory,
-  // deleteCategory
+  getCategoryById,
+  createCategory,
+  updateCategory,
+  deleteCategory
 } = require('../controllers/category-controllers');
 const router = express.Router();
 const { isAuth } = require('../../middlewares/isAuth-middleware');
@@ -12,8 +12,11 @@ const { isAuth } = require('../../middlewares/isAuth-middleware');
 
 router.get('/', getAllCategories);
 router.get('/:id', getCategoryById);
-//router.post('/', [isAuth], createCategory);
-// router.put('/:id', [isAuth], updateCategory);
-// router.delete('/:id', [isAuth], deleteCategory);
+// router.post('/', createCategory);
+// router.put('/:id', updateCategory);
+
+router.post('/', [isAuth], createCategory);
+router.put('/:id', [isAuth], updateCategory);
+router.delete('/:id', [isAuth], deleteCategory);
 
 module.exports = router;

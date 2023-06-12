@@ -10,7 +10,7 @@ const isAuth = async (req, res, next) => {
     }
 
     const parsedToken = token?.replace('Bearer ', '');
-    const validToken = verifyToken(parsedToken);
+    const validToken = verifyToken(parsedToken, process.env.JWT_SECRET);
 
     const userLogued = await User.findById(validToken.id);
 
@@ -22,4 +22,4 @@ const isAuth = async (req, res, next) => {
   }
 };
 
-module.exports = isAuth;
+module.exports = { isAuth };

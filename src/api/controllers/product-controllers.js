@@ -14,9 +14,8 @@ const createProduct = async (req, res, next) => {
     const newProduct = new Product(req.body);
 
     const createdProduct = await newProduct.save();
- 
-    return res.status(201).json(createdProduct);
-   
+
+    return res.status(200).json(createdProduct);
   } catch (error) {
     return next('Error while creating Product 👺', error);
   }
@@ -35,13 +34,13 @@ const updateProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const newProduct = new Product(req.body);
+    // const newProduct = new Product(req.body);
 
     // newProduct._id = id;
 
     // const originalProduct = await Product.findById(id);
 
-    const updatedProduct = await Product.findByIdAndUpdate(id, newProduct, {
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
       new: true
     });
     return res.status(200).json(updatedProduct);

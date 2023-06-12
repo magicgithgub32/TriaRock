@@ -12,7 +12,7 @@ const ProductSchema = new mongoose.Schema(
       trim: true
     },
     image: { type: String, required: true, trim: true },
-    bestSeller: { type: Boolean, required: true}
+    bestSeller: { type: Boolean, required: true }
   },
   {
     timestamps: true,
