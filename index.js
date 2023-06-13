@@ -1,6 +1,6 @@
+require('dotenv').config();
 const express = require('express');
 const { connectDB } = require('./src/config/db');
-require('dotenv').config();
 const mainRouter = require('./src/api/routes/index-routes');
 const { configCloudinary } = require('./src/middlewares/uploadImg-middleware');
 
