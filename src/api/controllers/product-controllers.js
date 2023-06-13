@@ -1,4 +1,5 @@
 const Product = require('../models/product-model');
+const { deleteProductImgCloudinary } = require('../../middlewares/uploadImg-middleware');
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -7,15 +8,22 @@ const getAllProducts = async (req, res, next) => {
   } catch (error) {
     return next('Products were not found 👺', error);
   }
-};
+}
 
 const createProduct = async (req, res, next) => {
   try {
     const newProduct = new Product(req.body);
+    console.log(req.file.path)
+
+    if (req.file) {
+      newProduct.image = req.file.path;
+    } else {
+      newProduct.image = 'No image';
+    }
 
     const createdProduct = await newProduct.save();
 
-    return res.status(200).json(createdProduct);
+    return res.status(201).json(createdProduct);
   } catch (error) {
     return next('Error while creating Product 👺', error);
   }
@@ -54,7 +62,7 @@ const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
 
-    // eraseProductCoverCloudinary(deletedProduct.cover);
+    deleteProductImgCloudinary(deletedProduct.image);
 
     return res.status(200).json('Product deleted successfully');
   } catch (error) {
@@ -62,10 +70,35 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
+const uploadProductImg = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (req.file) {
+      const originalProduct = await Product.findById(id);
+     
+      if (originalProduct.image) {
+        deleteProductImgCloudinary(originalProduct.image);
+      }
+
+      const updatedProduct = await Product.findByIdAndUpdate(
+        id,
+        { $set: { image: req.file.path } },
+        { new: true }
+      );
+      
+      return res.status(200).json(updatedProduct);
+    }
+  } catch (error) {
+    return next('Error uploading image 👺', error);
+  }
+};
+
+
 module.exports = {
   getAllProducts,
   createProduct,
   getProductById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  uploadProductImg
 };

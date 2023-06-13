@@ -2,11 +2,13 @@ const express = require('express');
 const { connectDB } = require('./src/config/db');
 require('dotenv').config();
 const mainRouter = require('./src/api/routes/index-routes');
+const { configCloudinary } = require('./src/middlewares/uploadImg-middleware');
 
 const server = express();
 const PORT = Number(process.env.PORT);
 
 connectDB();
+configCloudinary();
 
 server.use(express.json({ limit: '5mb' }));
 server.use(express.urlencoded({ limit: '5mb', extended: false }));
