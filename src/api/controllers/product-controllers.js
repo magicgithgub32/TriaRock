@@ -30,8 +30,8 @@ const createProduct = async (req, res, next) => {
 
 const getProductById = async (req, res, next) => {
   try {
-    const Product = await Product.findById(req.params.id);
-    return res.status(200).json(Product);
+    const product = await Product.findById(req.params.id);
+    return res.status(200).json(product);
   } catch (error) {
     return next('Product not found 👺', error);
   }

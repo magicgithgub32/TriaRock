@@ -13,9 +13,9 @@ const getAllUsers = async (req, res, next) => {
 
 const register = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, rol } = req.body;
 
-    const newUser = new User({ email, password });
+    const newUser = new User({ email, password, rol });
 
     const existingUser = await User.findOne({ email: newUser.email });
     if (existingUser) {

@@ -21,8 +21,8 @@ const createCategory = async (req, res, next) => {
 
 const getCategoryById = async (req, res, next) => {
   try {
-    const Category = await Category.findById(req.params.id);
-    return res.status(200).json(Category);
+    const category = await Category.findById(req.params.id);
+    return res.status(200).json(category);
   } catch (error) {
     return next('Category not found 🤬', error);
   }
