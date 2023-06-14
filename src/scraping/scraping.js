@@ -1,42 +1,60 @@
 const puppeteer = require('puppeteer');
-const fs = require("fs");
+const fs = require('fs');
+const Product = require('../api/models/product-model');
+const { connectDB } = require('../config/db');
 
-const PRODUCTS_URL = "https://www.decathlon.es/es/browse/c0-deportes/c1-triatlon/c2-equipamiento/_/N-199d4np";
+const PRODUCTS_URL =
+  'https://www.decathlon.es/es/browse/c0-deportes/c1-triatlon/c2-equipamiento/_/N-199d4np';
 
 const scrapeProducts = async () => {
-	
-	const browser = await puppeteer.launch({
-		headless: false,
-		defaultViewport: null,
-		args: ["--start-maximized"],
-	});
-	
-	const page = await browser.newPage();
-	await page.goto(PRODUCTS_URL);
+  const browser = await puppeteer.launch({
+    headless: false,
+    defaultViewport: null,
+    args: ['--start-maximized']
+  });
 
+  const page = await browser.newPage();
+  await page.goto(PRODUCTS_URL);
 
-    await page.click('.didomi-popup-notice')
-    await page.waitForSelector('.giftcard-banner.svelte-153c6ej')
+  //dejamos esta línea comentada, pues a veces no salta el po-up de las cookies
+  //   await page.click('.didomi-popup-notice');
+  await page.waitForSelector('.giftcard-banner.svelte-153c6ej');
 
-    const name = await page.$$eval('h2.vtmn-leading-5', (nodes) => nodes.map((node) => 
-    node.innerText)) 
-    const price = await page.$$eval('', (nodes) => nodes.map((node) => 
-    node.innerText)) 
+  const name = await page.$$eval('h2.vtmn-leading-5', (nodes) =>
+    nodes.map((node) => node.innerText)
+  );
+  const price = await page.$$eval('span.vtmn-price_size--medium', (nodes) =>
+    nodes.map((node) => node.innerText)
+  );
 
-    console.log(name)
+  const image = await page.$$eval('img.svelte-11itto', (nodes) => nodes.map((node) => node.src));
 
-	// //Como la primera fila son los titulos de la tabla la vamos a eliminar
-	// trs.shift();
-	// //Y ahora vamos a eliminar los null de nuestra lista
-	// const weaponList = trs.filter((tr) => tr !== null);
+  const promo = await page.$$eval('div.price-discount-informations', (nodes) =>
+    nodes.map((node) => node.innerText)
+  );
 
-	// const jsonpRroducts = JSON.stringify(weaponList);
-	// fs.writeFile("pRroducts.json", jsonpRroducts, () => {
-	// 	console.log("pRroducts JSON created!");
-	// });
+  const allProducts = name.map((value, index) => {
+    return {
+      name: name[index],
+      price: price[index],
+      image: image[index + 7]
+    };
+  });
 
-	// //Cerraremos el navegador
-	// await browser.close();
+  allProducts.map(async (product) => {
+    const productSchema = new Product(product);
+    try {
+      await productSchema.save();
+      console.log('all products saved in our database');
+    } catch (err) {
+      console.log('Error creating schema', err);
+    }
+  });
+
+  await browser.close();
 };
+
+//Hemos de conectarnos a la base de datos para que pueda guardar todos los productos
+connectDB();
 
 scrapeProducts();
