@@ -7,7 +7,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'TriaRock',
-    allowFormats: ['jpg', 'png', 'jpeg', 'gif', 'avif']
+    allowedFormats: ['jpg', 'png', 'jpeg', 'gif', 'avif', 'pdf']
   }
 });
 
