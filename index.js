@@ -3,12 +3,20 @@ const express = require('express');
 const { connectDB } = require('./src/config/db');
 const mainRouter = require('./src/api/routes/index-routes');
 const { configCloudinary } = require('./src/middlewares/uploadImg-middleware');
+const cors = require('cors')
 
 const server = express();
 const PORT = Number(process.env.PORT);
 
+server.use(cors({
+  origin: (origin, callback) => { 
+      callback(null, true);
+  }
+}))
+
 connectDB();
 configCloudinary();
+
 
 server.use(express.json({ limit: '5mb' }));
 server.use(express.urlencoded({ limit: '5mb', extended: false }));

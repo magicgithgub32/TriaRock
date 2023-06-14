@@ -13,7 +13,6 @@ const getAllProducts = async (req, res, next) => {
 const createProduct = async (req, res, next) => {
   try {
     const newProduct = new Product(req.body);
-    console.log(req.file.path)
 
     if (req.file) {
       newProduct.image = req.file.path;
