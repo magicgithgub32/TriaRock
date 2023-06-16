@@ -14,7 +14,7 @@ const { uploadProductImgCloudinary } = require('../../middlewares/uploadImg-midd
 router.get('/', getAllProducts);
 router.get('/:id', getProductById);
 router.post('/', [isAdmin], uploadProductImgCloudinary.single('image'), createProduct);
-router.put('/:id', [isAdmin], updateProduct);
+router.put('/:id', [isAdmin], updateProduct)
 router.patch('/:id', [isAdmin], uploadProductImgCloudinary.single('image'), uploadProductImg);
 router.delete('/:id', [isAdmin], deleteProduct);
 

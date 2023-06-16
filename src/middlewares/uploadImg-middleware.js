@@ -12,8 +12,9 @@ const storage = new CloudinaryStorage({
 });
 
 const uploadProductImgCloudinary = multer({ storage });
+const uploadCategoryImgCloudinary = multer({ storage });
 
-const deleteProductImgCloudinary = (imgUrl) => {
+const deleteImgCloudinary = (imgUrl) => {
   const imgSplitted = imgUrl.split('/');
   const nameSplitted = imgSplitted[imgSplitted.length - 1].split('.');
   const folderSplitted = imgSplitted[imgSplitted.length - 2];
@@ -33,6 +34,7 @@ const configCloudinary = () => {
 
 module.exports = {
   uploadProductImgCloudinary,
-  deleteProductImgCloudinary,
+  uploadCategoryImgCloudinary,
+  deleteImgCloudinary,
   configCloudinary
 };

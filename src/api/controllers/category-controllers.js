@@ -1,4 +1,5 @@
 const Category = require('../models/category-model');
+const { deleteImgCloudinary } = require('../../middlewares/uploadImg-middleware');
 
 const getAllCategories = async (req, res, next) => {
   try {
@@ -52,10 +53,37 @@ const deleteCategory = async (req, res, next) => {
   }
 };
 
+const uploadCategoryImg = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (req.file) {
+      const originalCategory = await Category.findById(id);
+     
+      if (originalCategory.image) {
+        deleteImgCloudinary(originalCategory.image);
+      }
+
+      const updatedCategory = await Category.findByIdAndUpdate(
+        id,
+        { $set: { image: req.file.path } },
+        { new: true }
+      );
+      
+      return res.status(200).json(updatedCategory);
+        // return res.json(updatedCategory);
+    }
+  } catch (error) {
+    return next('Error uploading image 👺', error);
+  }
+};
+
+
+
 module.exports = {
   getAllCategories,
   createCategory,
   getCategoryById,
   updateCategory,
-  deleteCategory
+  deleteCategory,
+  uploadCategoryImg  
 };

@@ -1,5 +1,5 @@
 const Product = require('../models/product-model');
-const { deleteProductImgCloudinary } = require('../../middlewares/uploadImg-middleware');
+const { deleteImgCloudinary } = require('../../middlewares/uploadImg-middleware');
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -61,7 +61,7 @@ const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
 
-    deleteProductImgCloudinary(deletedProduct.image);
+    deleteImgCloudinary(deletedProduct.image);
 
     return res.status(200).json('Product deleted successfully');
   } catch (error) {
@@ -76,7 +76,7 @@ const uploadProductImg = async (req, res, next) => {
       const originalProduct = await Product.findById(id);
      
       if (originalProduct.image) {
-        deleteProductImgCloudinary(originalProduct.image);
+        deleteImgCloudinary(originalProduct.image);
       }
 
       const updatedProduct = await Product.findByIdAndUpdate(
