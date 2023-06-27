@@ -4,10 +4,20 @@ const bcrypt = require('bcrypt');
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const allUsers = await User.find();
+
+    const allUsers = await User.find().populate('favs');
     return res.status(200).json(allUsers);
   } catch (error) {
     return next('Error finding users 😥', error);
+  }
+};
+
+const getUserByEmail = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.params.email });
+    return res.status(200).json(user);
+  } catch (error) {
+    return next('User not found 👺', error);
   }
 };
 
@@ -67,8 +77,39 @@ const login = async (req, res, next) => {
   }
 };
 
+const addOrRemoveFav = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { fav } = req.body;
+    const selectedUser = await User.findById(id);
+
+    if (selectedUser.favs.includes(fav)) {
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        {
+          $pull: { favs: fav }
+        },
+        { new: true }
+      );
+      return res.status(200).json(updatedUser);
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        $addToSet: { favs: fav }
+      },
+      { new: true }
+    );
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    return next('Error adding fav to user', error);
+  }
+};
+
 module.exports = {
   getAllUsers,
+  getUserByEmail,
   register,
-  login
+  login,
+  addOrRemoveFav
 };

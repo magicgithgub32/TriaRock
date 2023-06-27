@@ -11,7 +11,8 @@ const UserSchema = new mongoose.Schema(
       default: 'customer',
       required: true,
       trim: true
-    }
+    },
+    favs: [{ type: mongoose.Types.ObjectId, required: true, trim: true, ref: 'Product' }], 
   },
   {
     timestamps: true,
