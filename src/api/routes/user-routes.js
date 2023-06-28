@@ -4,7 +4,7 @@ const router = express.Router();
 const { isAdmin } = require('../../middlewares/isAdmin-middleware');
 
 router.get('/', [isAdmin], getAllUsers);
-router.get('/:email', [isAdmin], getUserByEmail);
+router.get('/:email', getUserByEmail);
 router.post('/register', register);
 router.post('/login', login);
 router.put('/:id/fav', addOrRemoveFav);
