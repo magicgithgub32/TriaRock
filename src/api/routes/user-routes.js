@@ -8,7 +8,7 @@ router.get('/', [isAdmin], getAllUsers);
 router.get('/:email', getUserByEmail);
 router.post('/register', register);
 router.post('/login', login);
-router.put('/:id/fav', [isAuth], addOrRemoveFav);
+router.put('/:id/fav', addOrRemoveFav);
 
 
 module.exports = router;
