@@ -77,10 +77,13 @@ const login = async (req, res, next) => {
   }
 };
 
+
 const addOrRemoveFav = async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log('id', id);
     const { fav } = req.body;
+    console.log('fav',fav)
     const selectedUser = await User.findById(id);
 
     if (selectedUser.favs.includes(fav)) {
@@ -100,6 +103,7 @@ const addOrRemoveFav = async (req, res, next) => {
       },
       { new: true }
     );
+    console.log('updtedUser',updatedUser)
     return res.status(200).json(updatedUser);
   } catch (error) {
     return next('Error adding fav to user', error);
