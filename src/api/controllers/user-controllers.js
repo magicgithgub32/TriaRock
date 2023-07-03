@@ -14,7 +14,7 @@ const getAllUsers = async (req, res, next) => {
 
 const getUserByEmail = async (req, res, next) => {
   try {
-    const user = await User.findOne({ email: req.params.email });
+    const user = await User.findOne({ email: req.params.email }).populate('favs');
     return res.status(200).json(user);
   } catch (error) {
     return next('User not found 👺', error);
@@ -93,7 +93,7 @@ const addOrRemoveFav = async (req, res, next) => {
           $pull: { favs: fav }
         },
         { new: true }
-      );
+      ).populate('favs');
       return res.status(200).json(updatedUser);
     }
     const updatedUser = await User.findByIdAndUpdate(
