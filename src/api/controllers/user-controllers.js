@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 
 const getAllUsers = async (req, res, next) => {
   try {
-
     const allUsers = await User.find().populate('favs');
     return res.status(200).json(allUsers);
   } catch (error) {
@@ -77,18 +76,17 @@ const login = async (req, res, next) => {
   }
 };
 
-
 const addOrRemoveFav = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    console.log('id', id);
+    const { email } = req.params;
+    console.log('email', email);
     const { fav } = req.body;
-    console.log('fav',fav)
-    const selectedUser = await User.findById(id);
+    console.log('fav', fav);
+    const selectedUser = await User.findOne({ email });
 
     if (selectedUser.favs.includes(fav)) {
-      const updatedUser = await User.findByIdAndUpdate(
-        id,
+      const updatedUser = await User.findOneAndUpdate(
+        { email },
         {
           $pull: { favs: fav }
         },
@@ -96,17 +94,17 @@ const addOrRemoveFav = async (req, res, next) => {
       ).populate('favs');
       return res.status(200).json(updatedUser);
     }
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
       {
         $addToSet: { favs: fav }
       },
       { new: true }
     );
-    console.log('updtedUser',updatedUser)
+    console.log('updatedUser', updatedUser);
     return res.status(200).json(updatedUser);
   } catch (error) {
-    return next('Error adding fav to user', error);
+    return res.status(500).json({ message: 'Error adding fav to user 🥺' });
   }
 };
 
