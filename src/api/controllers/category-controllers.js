@@ -70,7 +70,6 @@ const uploadCategoryImg = async (req, res, next) => {
       );
       
       return res.status(200).json(updatedCategory);
-        // return res.json(updatedCategory);
     }
   } catch (error) {
     return next('Error uploading image 👺', error);

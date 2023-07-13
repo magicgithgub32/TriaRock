@@ -28,14 +28,14 @@ const register = async (req, res, next) => {
 
     const existingUser = await User.findOne({ email: newUser.email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists 🤔' });
+      return res.status(400).json({ message: 'User already exists.' });
     }
 
     const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z]).{6,}$/;
     if (!passwordRegex.test(password)) {
       return res.status(400).json({
         message:
-          'Password must be at least 6 characters long and contain both uppercase and lowercase letters 🙈'
+          'Password must be at least 6 characters long and contain both uppercase and lowercase letters.'
       });
     }
 
@@ -57,7 +57,11 @@ const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return next('User not found 🤨');
+      // return next('User not found 🤨');
+      return res.status(400).json({
+        message:
+          'Please, check your email and password and try again.'
+      });
     }
     if (bcrypt.compareSync(req.body.password, user.password)) {
       const token = generateToken(user._id, user.email);
@@ -69,7 +73,11 @@ const login = async (req, res, next) => {
         token: token
       });
     } else {
-      return next('Incorrect password ⛔️');
+      // return next('Incorrect password ⛔️');
+      return res.status(400).json({
+        message:
+          'Please, check your email and password and try again.'
+      });
     }
   } catch (error) {
     return next('Login failed 🤔', error);
@@ -101,7 +109,7 @@ const addOrRemoveFav = async (req, res, next) => {
       },
       { new: true }
     );
-    console.log('updatedUser', updatedUser);
+    
     return res.status(200).json(updatedUser);
   } catch (error) {
     return res.status(500).json({ message: 'Error adding fav to user 🥺' });

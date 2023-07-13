@@ -41,12 +41,6 @@ const updateProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // const newProduct = new Product(req.body);
-
-    // newProduct._id = id;
-
-    // const originalProduct = await Product.findById(id);
-
     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
       new: true
     });
