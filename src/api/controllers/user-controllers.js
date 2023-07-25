@@ -59,8 +59,7 @@ const login = async (req, res, next) => {
     if (!user) {
       // return next('User not found 🤨');
       return res.status(400).json({
-        message:
-          'Please, check your email and password and try again.'
+        message: 'Please, check your email and password and try again.'
       });
     }
     if (bcrypt.compareSync(req.body.password, user.password)) {
@@ -75,8 +74,7 @@ const login = async (req, res, next) => {
     } else {
       // return next('Incorrect password ⛔️');
       return res.status(400).json({
-        message:
-          'Please, check your email and password and try again.'
+        message: 'Please, check your email and password and try again.'
       });
     }
   } catch (error) {
@@ -109,7 +107,7 @@ const addOrRemoveFav = async (req, res, next) => {
       },
       { new: true }
     );
-    
+
     return res.status(200).json(updatedUser);
   } catch (error) {
     return res.status(500).json({ message: 'Error adding fav to user 🥺' });
