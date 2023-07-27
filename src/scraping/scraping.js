@@ -16,8 +16,6 @@ const scrapeProducts = async () => {
   const page = await browser.newPage();
   await page.goto(PRODUCTS_URL);
 
-  //dejamos esta línea comentada, pues a veces no salta el po-up de las cookies
-  //   await page.click('.didomi-popup-notice');
   await page.waitForSelector('.giftcard-banner.svelte-153c6ej');
 
   const name = await page.$$eval('h2.vtmn-leading-5', (nodes) =>
@@ -54,7 +52,6 @@ const scrapeProducts = async () => {
   await browser.close();
 };
 
-//Hemos de conectarnos a la base de datos para que pueda guardar todos los productos
 connectDB();
 
 scrapeProducts();

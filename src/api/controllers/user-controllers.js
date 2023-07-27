@@ -47,9 +47,7 @@ const register = async (req, res, next) => {
       createdUser
     });
   } catch (error) {
-    console.error('Error registering user:', error);
-
-    return res.status(500).json({ message: 'Error registering user 🥺' });
+    return next('Error registering user 🙁', error);
   }
 };
 
@@ -57,7 +55,6 @@ const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      // return next('User not found 🤨');
       return res.status(400).json({
         message: 'Please, check your email and password and try again.'
       });
@@ -72,7 +69,6 @@ const login = async (req, res, next) => {
         token: token
       });
     } else {
-      // return next('Incorrect password ⛔️');
       return res.status(400).json({
         message: 'Please, check your email and password and try again.'
       });
@@ -85,9 +81,7 @@ const login = async (req, res, next) => {
 const addOrRemoveFav = async (req, res, next) => {
   try {
     const { email } = req.params;
-    console.log('email', email);
     const { fav } = req.body;
-    console.log('fav', fav);
     const selectedUser = await User.findOne({ email });
 
     if (selectedUser.favs.includes(fav)) {
@@ -110,7 +104,7 @@ const addOrRemoveFav = async (req, res, next) => {
 
     return res.status(200).json(updatedUser);
   } catch (error) {
-    return res.status(500).json({ message: 'Error adding fav to user 🥺' });
+    return next('Error adding fav to user 🥺', error);
   }
 };
 
