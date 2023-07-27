@@ -8,14 +8,6 @@ const cors = require('cors');
 const server = express();
 const PORT = Number(process.env.PORT);
 
-server.use(
-  cors({
-    origin: (origin, callback) => {
-      callback(null, true);
-    }
-  })
-);
-
 connectDB();
 configCloudinary();
 
@@ -27,6 +19,16 @@ server.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-type');
   next();
 });
+
+const corsOptions = {
+  origin: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  exposedHeaders: ['Content-Length', 'Authorization', 'X-Powered-By'],
+};
+
+server.use(cors(corsOptions));
+
 
 server.disable('x-powered-by');
 
