@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "scraping": "node ./src/scraping/scraping.js"
+    "scraping": "node ./src/scraping/scraping.js",
+    "build": "echo 'build command'"
   },
   "keywords": [],
   "author": "",
