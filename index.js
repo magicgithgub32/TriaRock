@@ -16,15 +16,6 @@ server.use(
   })
 );
 
-const corsOptions = {
-  origin: true,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  exposedHeaders: ['Content-Length', 'Authorization', 'X-Powered-By'],
-};
-
-server.use(cors(corsOptions));
-
 connectDB();
 configCloudinary();
 
