@@ -22,6 +22,12 @@ configCloudinary();
 server.use(express.json({ limit: '5mb' }));
 server.use(express.urlencoded({ limit: '5mb', extended: false }));
 
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
+  res.header('Access-Control-Allow-Headers', 'Content-type');
+  next();
+});
+
 server.disable('x-powered-by');
 
 server.use('/api', mainRouter);
